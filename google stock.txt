@@ -1,0 +1,50 @@
+This code is written in Python and uses libraries like pandas, NumPy, matplotlib, and TensorFlow to perform time series prediction on stock prices. Here's a breakdown of the code:
+
+**1. Loading and Preparing Data:**
+
+*  **Import libraries:** The code starts by importing necessary libraries like pandas for data manipulation, NumPy for numerical computations, matplotlib for plotting, and Keras (part of TensorFlow) for building the machine learning model.
+* **Load data:** It uses `pd.read_csv` to load the CSV file containing Google Stock Prices (assumed to be named 'GOOGL.csv').
+* **Print data length:** It then prints the number of data points using `len(data)`.
+* **Plot data:** This section creates a time series plot of the closing stock prices using `plt.plot`.
+
+**2. Data Preprocessing:**
+
+* **Normalize data:** The `MinMaxScaler` from scikit-learn is used to normalize the closing stock prices between 0 and 1. This helps the machine learning model train more efficiently.
+* **Split data:** The data is then split into training and testing sets using a predefined split ratio (80% for training and 20% for testing).
+
+**3. Creating Time Series Datasets:**
+
+* **`create_dataset` function:** This function takes the data and a time step as input. It iterates through the data, creating sequences of time steps (e.g., 100 days) and their corresponding closing prices on the next day. This creates a dataset suitable for LSTM models, which learn patterns over time.
+* **Define time steps and create datasets:** The code defines a time step (e.g., 100 days) and uses the `create_dataset` function to generate training and testing datasets.
+
+**4. Reshaping Data for LSTM:**
+
+* **Reshape data:** LSTM models require data in a specific format (samples, time steps, features). Here, the training and testing data are reshaped to meet this format.
+
+**5. Building the LSTM Model:**
+
+* **Sequential model:** A sequential model is created from TensorFlow's Keras library.
+* **LSTM layers:** Two LSTM layers are added with 50 units each. These layers process the sequential data and learn temporal dependencies. The `return_sequences=True` argument in the first LSTM layer allows it to output the entire sequence for the next layer.
+* **Dense layer:** A final dense layer with one unit is added to predict the closing price for the next day.
+
+**6. Compiling and Training the Model:**
+
+* **Compile model:** The model is compiled by specifying an optimizer (adam), a loss function (mean_squared_error), which measures the difference between predicted and actual prices.
+* **Train model:** The `model.fit` function trains the model on the training data for a specified number of epochs (iterations) and batch size (number of samples processed together). Validation data (testing data) is used to monitor the model's performance during training and prevent overfitting.
+
+**7. Evaluating the Model:**
+
+* **Training time:** The code measures and prints the time taken to train the model.
+* **Evaluate model:** The `model.evaluate` function is used to evaluate the model's performance on both training and testing data. It returns the loss value, which indicates how well the model generalizes to unseen data.
+
+**8. Making Predictions:**
+
+* **Prediction time:** The code measures and prints the time taken to make predictions on the test data using the trained model.
+* **Predictions:** The `model.predict` function generates predictions for the closing prices on future days based on the testing data.
+
+**9. Visualizing Results:**
+
+* **Inverse scaling:** The predicted prices are inverse-transformed back to the original scale using the scaler to get the actual stock prices.
+* **Plot predictions:** Finally, the code plots the actual and predicted closing prices for both training and testing data to visually compare the model's performance.
+
+Overall, this code demonstrates how to use LSTM models for time series prediction on financial data like stock prices. It includes data loading, preprocessing, model building, training, evaluation, prediction, and visualization steps.
